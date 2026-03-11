@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  // url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  username String @unique
+  password String
+}
+
+model Achievement {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  fullname String
+  ranking Int
+  description String
+  image String
+}
+
+model Division {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  description String
+  members Member[]
+  image String
+}
+
+model Member {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  nim String
+  position String
+  division Division @relation(fields: [divisionId], references: [id])
+  divisionId String @db.ObjectId
+  image String?
+  attendances Attendance[]
+}
+
+model Competition {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  description String
+  link String
+}
+
+model Blog {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  content String
+  image String
+}
+
+model Meeting {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  description String
+  location String
+  createdAt DateTime @default(now())
+  attendances Attendance[]
+}
+
+model Attendance {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  member Member @relation(fields: [memberId], references: [id])
+  memberId String @db.ObjectId
+  meeting Meeting @relation(fields: [meetingId], references: [id])
+  meetingId String @db.ObjectId
+  image String
+  status String @default("ALPHA")
+  createdAt DateTime @default(now())
+  @@unique([memberId, meetingId])
+}
