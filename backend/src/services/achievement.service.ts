@@ -2,13 +2,13 @@ import { prisma } from "../config/db.config.js";
 import type { Achievement } from "../models/achievement.model.js";
 
 export async function getAllAchievement() {
-  const data = await prisma.achievement.findMany()
+  const data = await prisma.achievement.findMany();
 
   if (!data) {
-    throw new Error("Data untuk saat ini masih kosong bro !")
+    throw new Error("Data untuk saat ini masih kosong bro !");
   }
 
-  return data
+  return data;
 }
 
 export async function createAchievement(data: Achievement) {
@@ -18,35 +18,38 @@ export async function createAchievement(data: Achievement) {
       ranking: data.ranking,
       description: data.description,
       image: data.image,
-    }
-  })
+    },
+  });
 
   if (!newData) {
-    throw new Error("Masukkan data yang valid bro !")
+    throw new Error("Masukkan data yang valid bro !");
   }
 
-  return newData
+  return newData;
 }
 
-export async function updateAchievement(id: string, data: Partial<Achievement>) {
+export async function updateAchievement(
+  id: string,
+  data: Partial<Achievement>,
+) {
   const updateData = await prisma.achievement.update({
     where: { id },
-    data: data
-  })
+    data: data,
+  });
 
   if (!updateData) {
-    throw new Error("Data tidak ditemukan & tidak dapat mengupdatenya")
+    throw new Error("Data tidak ditemukan & tidak dapat mengupdatenya");
   }
 
-  return updateData
+  return updateData;
 }
 
 export async function deleteAchievement(id: string) {
   const deleteData = await prisma.achievement.delete({
-    where: { id }
-  })
+    where: { id },
+  });
 
   if (!deleteData) {
-    throw new Error("Data tidak ditemukan & tidak dapat menghapusnya")
+    throw new Error("Data tidak ditemukan & tidak dapat menghapusnya");
   }
 }

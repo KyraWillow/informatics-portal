@@ -1,11 +1,10 @@
-import { getDefaultResultOrder } from "node:dns";
 import {
   getAllAchievement,
   createAchievement,
   updateAchievement,
   deleteAchievement,
-} from "../services/achievement.model.js";
-import type { Request, response, Response } from "express";
+} from "../services/achievement.service.js";
+import type { Request, Response } from "express";
 
 export async function index(_req: Request, res: Response) {
   try {
