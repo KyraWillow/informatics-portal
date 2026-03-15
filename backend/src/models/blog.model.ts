@@ -6,3 +6,6 @@ export interface Blog {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type BlogCreate = Omit<Blog, "id" | "createdAt" | "updatedAt">;
+export type BlogUpdate = Partial<Omit<Blog, "id" | "createdAt" | "updatedAt">>;
