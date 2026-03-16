@@ -5,6 +5,7 @@ import achievementRouter from "./routes/achievement.route.js";
 import divisionRouter from "./routes/division.route.js";
 import competitionRouter from "./routes/competition.routes.js";
 import blogRouter from "./routes/blog.route.js";
+import memberRouter from "./routes/member.route.js";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use("/api/achievement", achievementRouter);
 app.use("/api/division", divisionRouter);
 app.use("/api/competition", competitionRouter);
 app.use("/api/blog", blogRouter);
+app.use("/api/member", memberRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
