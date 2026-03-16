@@ -1,4 +1,5 @@
 import { prisma } from "../config/db.config.js";
+import { AppError } from "../middlewares/error.middleware.js";
 import type {
   Division,
   DivisionCreate,
@@ -8,11 +9,6 @@ import type {
 
 export async function getAllDivisions(): Promise<Division[]> {
   const data = await prisma.division.findMany();
-
-  if (!data) {
-    throw new Error("Data untuk saat ini masih kosong bro !");
-  }
-
   return data;
 }
 
@@ -34,6 +30,14 @@ export async function getDivisionWithMembers(
 }
 
 export async function createDivision(data: DivisionCreate): Promise<Division> {
+  const checkData = await prisma.division.findFirst({
+    where: { name: data.name },
+  });
+
+  if (checkData) {
+    throw new AppError("Division with this title already exists", 409);
+  }
+
   const newData = await prisma.division.create({
     data: {
       name: data.name,
@@ -41,11 +45,6 @@ export async function createDivision(data: DivisionCreate): Promise<Division> {
       image: data.image,
     },
   });
-
-  if (!newData) {
-    throw new Error("Gagal membuat data Division");
-  }
-
   return newData;
 }
 
@@ -53,24 +52,31 @@ export async function updateDivision(
   id: string,
   data: DivisionUpdate,
 ): Promise<Division> {
+  const checkData = await prisma.division.findFirst({
+    where: { id: id },
+  });
+
+  if (!checkData) {
+    throw new AppError("Division not found", 404);
+  }
+
   const updateData = await prisma.division.update({
     where: { id },
     data: data,
   });
-
-  if (!updateData) {
-    throw new Error("Gagal mengupdate data Divsion");
-  }
-
   return updateData;
 }
 
 export async function deleteDivision(id: string): Promise<void> {
-  const deleteData = await prisma.division.delete({
-    where: { id },
+  const checkData = await prisma.division.findFirst({
+    where: { id: id },
   });
 
-  if (!deleteData) {
-    throw new Error("Gagal menghapus data Division");
+  if (!checkData) {
+    throw new AppError("Division not found", 404);
   }
+
+  await prisma.division.delete({
+    where: { id },
+  });
 }

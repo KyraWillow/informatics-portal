@@ -10,11 +10,6 @@ import type {
 
 export async function getAllMember(): Promise<Member[]> {
   const data = await prisma.member.findMany();
-
-  if (!data) {
-    throw new AppError("Data Member saat ini masih kosong bro !", 404);
-  }
-
   return data;
 }
 
@@ -53,6 +48,14 @@ export async function getMemberWithAttendance(
 }
 
 export async function createMember(data: MemberCreate): Promise<Member> {
+  const checkData = await prisma.member.findFirst({
+    where: { nim: data.nim },
+  });
+
+  if (checkData) {
+    throw new AppError("Member with this title already exists", 409);
+  }
+
   const newData = await prisma.member.create({
     data: {
       name: data.name,
@@ -62,11 +65,6 @@ export async function createMember(data: MemberCreate): Promise<Member> {
       image: data.image,
     },
   });
-
-  if (!newData) {
-    throw new AppError("Gagal membuat  member", 500);
-  }
-
   return newData;
 }
 
@@ -74,24 +72,31 @@ export async function updateMember(
   id: string,
   data: MemberUpdate,
 ): Promise<Member> {
+  const checkData = await prisma.member.findFirst({
+    where: { id: id },
+  });
+
+  if (!checkData) {
+    throw new AppError("Member not found", 404);
+  }
+
   const updateData = await prisma.member.update({
     where: { id },
     data: data,
   });
-
-  if (!updateData) {
-    throw new AppError("Gagal mengupdate member", 500);
-  }
-
   return updateData;
 }
 
 export async function deleteMember(id: string): Promise<void> {
-  const deleteData = await prisma.member.delete({
-    where: { id },
+  const checkData = await prisma.member.findFirst({
+    where: { id: id },
   });
 
-  if (!deleteData) {
-    throw new AppError("Gagal menghapus member", 500);
+  if (!checkData) {
+    throw new AppError("Member not found", 404);
   }
+
+  await prisma.member.delete({
+    where: { id },
+  });
 }

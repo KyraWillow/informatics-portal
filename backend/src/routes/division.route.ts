@@ -11,7 +11,7 @@ const route = Router();
 
 route.get("/", index);
 route.get("/:id", showWithMembers);
-route.post("/:id", store);
+route.post("/", store);
 route.put("/:id", update);
 route.delete("/:id", destroy);
 
