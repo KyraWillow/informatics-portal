@@ -5,12 +5,14 @@ import {
   update,
   destroy,
 } from "../controllers/blog.controller.js";
+import { roleMiddleware } from "../middlewares/role.middleware.js";
+import { AuthMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
 router.get("/", index);
-router.post("/", store);
-router.put("/:id", update);
-router.delete("/:id", destroy);
+router.post("/", AuthMiddleware, roleMiddleware("admin"), store);
+router.put("/:id", AuthMiddleware, roleMiddleware("admin"), update);
+router.delete("/:id", AuthMiddleware, roleMiddleware("admin"), destroy);
 
 export default router;
