@@ -80,6 +80,7 @@ model Meeting {
   title       String
   description String?
   location    String?
+  link        String?
   attendances Attendance[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -92,7 +93,7 @@ model Attendance {
   member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
   meetingId String
   meeting   Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
-  image     String
+  // image     String  => Next update harus implementasi image seperti website kampus
   status    String   @default("ALPHA")
   createdAt DateTime @default(now())
   @@unique([memberId, meetingId])

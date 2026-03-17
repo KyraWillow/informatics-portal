@@ -5,7 +5,6 @@ export interface Attendance {
   id: string;
   memberId: string;
   meetingId: string;
-  image: string;
   status: string;
   createdAt: Date;
 }
@@ -17,3 +16,12 @@ export interface AttendanceWithMember extends Attendance {
 export interface AttendanceWithMeeting extends Attendance {
   meeting: Meeting;
 }
+
+export type AttendanceCreate = Omit<
+  Attendance,
+  "id" | "createdAt" | "updatedAt"
+>;
+
+export type AttendanceUpdate = Partial<
+  Omit<Attendance, "id" | "createdAt" | "updatedAt">
+>;

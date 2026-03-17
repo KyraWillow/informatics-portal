@@ -90,7 +90,7 @@ export async function destroy(
   try {
     const { id } = req.params;
     await deleteMember(id);
-    res.status(204).end();
+    res.status(204).send();
   } catch (error) {
     next(error);
   }
