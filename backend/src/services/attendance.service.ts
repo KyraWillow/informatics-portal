@@ -13,6 +13,14 @@ export async function getAllAttendances(): Promise<Attendance[]> {
   return data;
 }
 
+export async function getAllAttendancesByMeetingId(meetingId: string): Promise<Attendance[]> {
+  const data = await prisma.attendance.findMany({
+    where: { meetingId },
+    include: { member: true },
+  });
+  return data;
+}
+
 export async function getAllAttendancesById(id: string): Promise<Attendance> {
   const data = await prisma.attendance.findFirst({
     where: { id },

@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import {
   getAllAttendances,
   getAllAttendancesById,
+  getAllAttendancesByMeetingId,
   getAttendanceWithMeeting,
   getAttendanceWithMember,
   createAttendance,
@@ -50,8 +51,8 @@ export async function showAttendanceWithMeeting(
   next: NextFunction,
 ) {
   try {
-    const { id } = req.params;
-    const result = await getAllAttendancesById(id);
+    const { id } = req.params; // ini adalah meetingId
+    const result = await getAllAttendancesByMeetingId(id);
     res.status(200).json(result);
   } catch (error) {
     next(error);

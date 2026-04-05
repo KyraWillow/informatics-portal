@@ -1,5 +1,6 @@
 import express from "express";
 import * as dotenv from "dotenv";
+import cors from "cors";
 import userRoute from "./routes/register.route.js";
 import achievementRouter from "./routes/achievement.route.js";
 import divisionRouter from "./routes/division.route.js";
@@ -8,13 +9,24 @@ import blogRouter from "./routes/blog.route.js";
 import memberRouter from "./routes/member.route.js";
 import meetingRouter from "./routes/meeting.route.js";
 import attendanceRouter from "./routes/attendance.route.js";
+import { authRateLimit, globalRateLimit } from "./config/rate.limit.config.js";
+import helmet from "helmet";
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
-app.use("/api/user", userRoute);
+app.use(helmet());
+app.use(globalRateLimit);
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  }),
+);
+
+app.use("/api/user", authRateLimit, userRoute);
 app.use("/api/achievement", achievementRouter);
 app.use("/api/division", divisionRouter);
 app.use("/api/competition", competitionRouter);

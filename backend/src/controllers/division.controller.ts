@@ -30,6 +30,20 @@ export async function showWithMembers(
   }
 }
 
+export async function showWithMembersPublic(
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { id } = req.params;
+    const result = await getDivisionWithMembers(id);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function store(req: Request, res: Response, next: NextFunction) {
   try {
     const { name, description, image } = req.body;

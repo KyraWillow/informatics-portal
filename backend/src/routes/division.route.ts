@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   index,
   showWithMembers,
+  showWithMembersPublic,
   store,
   update,
   destroy,
@@ -12,6 +13,7 @@ import { roleMiddleware } from "../middlewares/role.middleware.js";
 const route = Router();
 
 route.get("/", index);
+route.get("/public/:id", showWithMembersPublic); // Public endpoint without auth
 route.get("/:id", AuthMiddleware, roleMiddleware("admin"), showWithMembers);
 route.post("/", AuthMiddleware, roleMiddleware("admin"), store);
 route.put("/:id", AuthMiddleware, roleMiddleware("admin"), update);

@@ -1,7 +1,9 @@
 node_modules
 dist
-
-/generated/prisma
 .env
+.env.*
+generated/
+*.log
 
-/generated/prisma
+# Schema files (may contain sensitive data)
+src/schemas/*.sql
